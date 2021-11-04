@@ -15,7 +15,7 @@ steps:
           if [[ $EUID == 0 ]]; then export SUDO=""; else export SUDO="sudo"; fi
           cd ~/
           curl -L -Ss --retry 5 https://github.com/outblocks/outblocks-cli/releases/download/v<<parameters.version>>/outblocks-<<parameters.version>>-linux_amd64.tar.gz | tar xz
-          mv ok /usr/local/bin/
+          $SUDO mv ok /usr/local/bin/
           echo 'ok bash completion' >> $BASH_ENV
         }
 
