@@ -90,7 +90,7 @@ steps:
               # Initialize gcloud CLI
               gcloud --quiet config set core/disable_usage_reporting true
               gcloud --quiet config set component_manager/disable_update_check true
-              gcloud auth activate-service-account --key-file=GOOGLE_APPLICATION_CREDENTIALS
+              gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
         - run:
             name: Authenticate docker with GCP access
             command: |
