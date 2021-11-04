@@ -52,7 +52,7 @@ steps:
         fi
 
         ok deploy --yes ${args[@]} \
-          --set "<<parameters.set-vars>" \
+          --set "<<parameters.set-vars>>" \
           --target-apps "<<parameters.target-apps>>" \
           --skip-apps "<<parameters.skip-apps>>" \
           <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \

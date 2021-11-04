@@ -13,6 +13,12 @@ parameters:
     description: |
         Setup and use GCP deployment.
     type: boolean
+  remote-docker-dlc:
+    type: boolean
+    default: false
+    description: |
+      Enable docker layer caching if using remote Docker engine.
+      Defaults to false.
   remote-docker-version:
     default: 17.09.0-ce
     description: |
@@ -58,7 +64,7 @@ parameters:
       Skip build command before deploy.
   set-vars:
     type: string
-    default: false
+    default: ""
     description: |
       Set values, can specify multiple or separate values with commas: key1=val1,key2=val2.
   value-files:
@@ -78,7 +84,7 @@ steps:
       condition: <<parameters.setup-remote-docker>>
       steps:
           - setup_remote_docker:
-              docker_layer_caching: <<parameters.use-docker-layer-caching>>
+              docker_layer_caching: <<parameters.remote-docker-dlc>>
               version: <<parameters.remote-docker-version>>
   - deploy:
       env: <<parameters.env>>
