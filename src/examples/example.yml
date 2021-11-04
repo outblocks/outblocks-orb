@@ -1,0 +1,16 @@
+description: Install the Outblocks CLI, if not available
+
+usage:
+  version: 2.1
+
+  orbs:
+    outblocks: outblocks/outblocks-cli@latest
+
+  workflows:
+    install_and_configure_cli:
+      jobs:
+        - outblocks-cli/install_and_deploy:
+            # optionally determine executor to use
+            executor: outblocks/machine
+            context: myContext # store your Outblocks env vars via Contexts, or project-level environment variables
+            setup-gcp: true
