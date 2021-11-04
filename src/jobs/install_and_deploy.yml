@@ -33,7 +33,7 @@ parameters:
   # install params
   version:
     type: string
-    default: "0.1.38"
+    default: latest
     description: Version of the CLI to install.
 
   # deploy params
