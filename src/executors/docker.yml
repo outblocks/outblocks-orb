@@ -11,5 +11,11 @@ parameters:
     default: "3.7"
     description: Image tag
 
+  resource_class:
+    type: string
+    default: medium
+    description: Docker resource class
+
 docker:
   - image: <<parameters.image>>:<<parameters.tag>>
+resource_class: <<parameters.resource_class>>

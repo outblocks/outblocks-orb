@@ -11,6 +11,12 @@ parameters:
     default: false
     description: Enable Docker Layer Caching?
 
+  resource_class:
+    type: string
+    default: medium
+    description: Machine resource class
+
 machine:
   image: <<parameters.image>>
   docker_layer_caching: <<parameters.dlc>>
+  resource_class: <<parameters.resource_class>>
