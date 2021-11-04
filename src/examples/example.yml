@@ -4,12 +4,12 @@ usage:
   version: 2.1
 
   orbs:
-    outblocks: outblocks/outblocks-cli@latest
+    outblocks: outblocks/outblocks@latest
 
   workflows:
     install_and_configure_cli:
       jobs:
-        - outblocks-cli/install_and_deploy:
+        - outblocks/install_and_deploy:
             # optionally determine executor to use
             executor: outblocks/machine
             context: myContext # store your Outblocks env vars via Contexts, or project-level environment variables
