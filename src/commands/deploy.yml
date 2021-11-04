@@ -51,9 +51,15 @@ steps:
           args+=(--values "<<parameters.value-files>>")
         fi
 
+        if [[ -n "<<parameters.target-apps>>" ]]; then
+          args+=(--target-apps "<<parameters.target-apps>>")
+        fi
+
+        if [[ -n "<<parameters.skip-apps>>" ]]; then
+          args+=(--skip-apps "<<parameters.skip-apps>>")
+        fi
+
         ok deploy --yes ${args[@]} \
           --set "<<parameters.set-vars>>" \
-          --target-apps "<<parameters.target-apps>>" \
-          --skip-apps "<<parameters.skip-apps>>" \
           <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \
           <<#parameters.skip-build>>--skip-build<</parameters.skip-build>>
