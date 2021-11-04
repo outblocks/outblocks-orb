@@ -29,5 +29,5 @@ steps:
         $SUDO mv ./ok /usr/local/bin/ok
 
   - run:
-      name: outblocks CLI version
+      name: Outblocks CLI version
       command: ok version
