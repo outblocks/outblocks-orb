@@ -1,0 +1,33 @@
+description: Install Outblocks CLI.
+
+parameters:
+  version:
+    type: string
+    default: latest
+    description: Version of the CLI to install.
+
+steps:
+  - run:
+      name: Install Outblocks CLI version
+      command: |
+        [ -w /usr/local/bin ] && SUDO="" || SUDO=sudo
+        PLATFORM="linux"
+        if [ -n "$(uname | grep "Darwin")" ]; then
+          PLATFORM="darwin"
+        fi
+
+
+        if [[ <<parameters.version>> == "latest" ]]; then
+          VERSION=$(curl -s https://api.github.com/repos/outblocks/outblocks-cli/releases/latest | grep tag_name | cut -d '"' -f 4)
+        else
+          VERSION="<<parameters.version>>"
+        fi
+
+        cd ~/
+        curl -L -Ss --retry 5 https://github.com/outblocks/outblocks-cli/releases/download/${VERSION}/outblocks-${VERSION:1}-${PLATFORM}_amd64.tar.gz | tar xz ok
+
+        $SUDO mv ./ok /usr/local/bin/ok
+
+  - run:
+      name: Outblocks CLI version
+      command: ok version

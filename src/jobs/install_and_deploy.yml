@@ -1,0 +1,112 @@
+description: Install Outblocks CLI and run deployment.
+
+executor: <<parameters.executor>>
+
+parameters:
+  executor:
+    type: executor
+    default: machine
+    description: >
+      Executor to use for this job. Defaults to this machine executor.
+  setup-gcp:
+    default: false
+    description: |
+        Setup and use GCP deployment.
+    type: boolean
+  remote-docker-dlc:
+    type: boolean
+    default: false
+    description: |
+      Enable docker layer caching if using remote Docker engine.
+      Defaults to false.
+  remote-docker-version:
+    default: 17.09.0-ce
+    description: |
+        Specify the remote docker version. See: https://circleci.com/docs/2.0/building-docker-images/#docker-version
+    type: string
+  setup-remote-docker:
+    default: false
+    description: |
+        Setup and use CircleCI's remote Docker environment for Docker and docker-compose commands? Not required if using machine executor.
+    type: boolean
+
+  # install params
+  version:
+    type: string
+    default: latest
+    description: Version of the CLI to install.
+
+  # deploy params
+  env:
+    type: string
+    default: $OUTBLOCKS_ENV
+    description: |
+      Outblocks environment to use. Defaults to 'dev'.
+  target-apps:
+    type: string
+    default: ""
+    description: |
+      Target only specified apps, specify in a form of <app type>.<name>, e.g.: static.website,service.api
+  skip-apps:
+    type: string
+    default: ""
+    description: |
+      Skip specified apps (if they exist), specify in a form of <app type>.<name>, e.g.: static.website,service.api
+  skip-all-apps:
+    type: boolean
+    default: false
+    description: |
+      Skip all apps (if they exist).
+  skip-build:
+    type: boolean
+    default: false
+    description: |
+      Skip build command before deploy.
+  set-vars:
+    type: string
+    default: ""
+    description: |
+      Set values, can specify multiple or separate values with commas: key1=val1,key2=val2.
+  value-files:
+    type: string
+    default: ""
+    description: |
+      Specify values in a YAML file or a URL (can specify multiple) (default [<env>.values.yaml]).
+steps:
+  - checkout
+  - install:
+      version: <<parameters.version>>
+  - when:
+      condition: <<parameters.setup-gcp>>
+      steps:
+        - gcp-cli/install
+        - run:
+            name: Initialize GCP access
+            command: |
+              # Store service account
+              echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+              echo "export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json" >> $BASH_ENV
+
+              # Initialize gcloud CLI
+              gcloud --quiet config set core/disable_usage_reporting true
+              gcloud --quiet config set component_manager/disable_update_check true
+              gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        - run:
+            name: Authenticate docker with GCP access
+            command: |
+              mkdir -p "$HOME/.docker"
+              gcloud auth configure-docker --quiet
+  - when:
+      condition: <<parameters.setup-remote-docker>>
+      steps:
+          - setup_remote_docker:
+              docker_layer_caching: <<parameters.remote-docker-dlc>>
+              version: <<parameters.remote-docker-version>>
+  - deploy:
+      env: <<parameters.env>>
+      target-apps: <<parameters.target-apps>>
+      skip-apps: <<parameters.skip-apps>>
+      skip-all-apps: <<parameters.skip-all-apps>>
+      skip-build: <<parameters.skip-build>>
+      set-vars: <<parameters.set-vars>>
+      value-files: <<parameters.value-files>>

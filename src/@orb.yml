@@ -1,0 +1,11 @@
+version: 2.1
+
+description: >
+  Quickly and easily install/configure/use Outblocks in any CircleCI job.
+
+display:
+  home_url: https://outblocks.io/docs/
+  source_url: https://github.com/outblocks/outblocks-orb
+
+orbs:
+  gcp-cli: circleci/gcp-cli@2.4.0

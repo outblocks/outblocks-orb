@@ -1,0 +1,22 @@
+description: >
+  CircleCI's Ubuntu-based machine executor VM:
+  https://circleci.com/docs/2.0/executor-types/#using-machine
+parameters:
+  image:
+    type: string
+    default: ubuntu-2004:202107-02
+
+  dlc:
+    type: boolean
+    default: false
+    description: Enable Docker Layer Caching?
+
+  resource_class:
+    type: string
+    default: medium
+    description: Machine resource class
+
+machine:
+  image: <<parameters.image>>
+  docker_layer_caching: <<parameters.dlc>>
+  resource_class: <<parameters.resource_class>>

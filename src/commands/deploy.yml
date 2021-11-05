@@ -1,0 +1,65 @@
+description: "Deploy using Outblocks CLI."
+
+parameters:
+  env:
+    type: string
+    default: $OUTBLOCKS_ENV
+    description: |
+      Outblocks environment to use. Defaults to 'dev'.
+  target-apps:
+    type: string
+    default: ""
+    description: |
+      Target only specified apps, specify in a form of <app type>.<name>, e.g.: static.website,service.api
+  skip-apps:
+    type: string
+    default: ""
+    description: |
+      Skip specified apps (if they exist), specify in a form of <app type>.<name>, e.g.: static.website,service.api
+  skip-all-apps:
+    type: boolean
+    default: false
+    description: |
+      Skip all apps (if they exist).
+  skip-build:
+    type: boolean
+    default: false
+    description: |
+      Skip build command before deploy.
+  set-vars:
+    type: string
+    default: ""
+    description: |
+      Set values, can specify multiple or separate values with commas: key1=val1,key2=val2.
+  value-files:
+    type: string
+    default: ""
+    description: |
+      Specify values in a YAML file or a URL (can specify multiple) (default [<env>.values.yaml]).
+
+steps:
+  - run:
+      name: Run Outblocks deployment
+      command: |
+        args=()
+
+        if [[ -n "<<parameters.env>>" ]]; then
+          args+=(--env "<<parameters.env>>")
+        fi
+
+        if [[ -n "<<parameters.value-files>>" ]]; then
+          args+=(--values "<<parameters.value-files>>")
+        fi
+
+        if [[ -n "<<parameters.target-apps>>" ]]; then
+          args+=(--target-apps "<<parameters.target-apps>>")
+        fi
+
+        if [[ -n "<<parameters.skip-apps>>" ]]; then
+          args+=(--skip-apps "<<parameters.skip-apps>>")
+        fi
+
+        ok deploy --yes ${args[@]} \
+          --set "<<parameters.set-vars>>" \
+          <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \
+          <<#parameters.skip-build>>--skip-build<</parameters.skip-build>>
