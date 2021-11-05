@@ -36,6 +36,11 @@ parameters:
     default: ""
     description: |
       Specify values in a YAML file or a URL (can specify multiple) (default [<env>.values.yaml]).
+  verify:
+    type: boolean
+    default: false
+    description: |
+      Verify existing resources before deploy.
 
 steps:
   - run:
@@ -62,4 +67,5 @@ steps:
         ok deploy --yes ${args[@]} \
           --set "<<parameters.set-vars>>" \
           <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \
-          <<#parameters.skip-build>>--skip-build<</parameters.skip-build>>
+          <<#parameters.skip-build>>--skip-build<</parameters.skip-build>> \
+          <<#parameters.verify>>--skip-build<</parameters.verify>>

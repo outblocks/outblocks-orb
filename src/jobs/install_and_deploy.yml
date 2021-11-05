@@ -20,7 +20,7 @@ parameters:
       Enable docker layer caching if using remote Docker engine.
       Defaults to false.
   remote-docker-version:
-    default: 17.09.0-ce
+    default: "18.09.3"
     description: |
         Specify the remote docker version. See: https://circleci.com/docs/2.0/building-docker-images/#docker-version
     type: string
@@ -72,6 +72,12 @@ parameters:
     default: ""
     description: |
       Specify values in a YAML file or a URL (can specify multiple) (default [<env>.values.yaml]).
+  verify:
+    type: boolean
+    default: false
+    description: |
+      Verify existing resources before deploy.
+
 steps:
   - checkout
   - install:
@@ -110,3 +116,4 @@ steps:
       skip-build: <<parameters.skip-build>>
       set-vars: <<parameters.set-vars>>
       value-files: <<parameters.value-files>>
+      verify: <<parameters.verify>>
