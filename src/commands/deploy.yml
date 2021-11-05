@@ -41,6 +41,11 @@ parameters:
     default: false
     description: |
       Verify existing resources before deploy.
+  lock-wait:
+    type: string
+    default: 5m
+    description: |
+      How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '5m' (5 minutes).
 
 steps:
   - run:
@@ -62,6 +67,10 @@ steps:
 
         if [[ -n "<<parameters.skip-apps>>" ]]; then
           args+=(--skip-apps "<<parameters.skip-apps>>")
+        fi
+
+        if [[ -n "<<parameters.lock-wait>>" ]]; then
+          args+=(--lock-wait "<<parameters.lock-wait>>")
         fi
 
         ok deploy --yes ${args[@]} \

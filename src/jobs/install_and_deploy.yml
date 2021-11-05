@@ -29,6 +29,14 @@ parameters:
     description: |
         Setup and use CircleCI's remote Docker environment for Docker and docker-compose commands? Not required if using machine executor.
     type: boolean
+  before-deploy:
+    description: Steps that will be executed before deployment.
+    type: steps
+    default: []
+  after-deploy:
+    description: Steps that will be executed after deployment.
+    type: steps
+    default: []
 
   # install params
   version:
@@ -77,6 +85,11 @@ parameters:
     default: false
     description: |
       Verify existing resources before deploy.
+  lock-wait:
+    type: string
+    default: 5m
+    description: |
+      How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '5m' (5 minutes).
 
 steps:
   - checkout
@@ -108,6 +121,8 @@ steps:
           - setup_remote_docker:
               docker_layer_caching: <<parameters.remote-docker-dlc>>
               version: <<parameters.remote-docker-version>>
+  - steps: << parameters.before-deploy >>
+
   - deploy:
       env: <<parameters.env>>
       target-apps: <<parameters.target-apps>>
@@ -117,3 +132,6 @@ steps:
       set-vars: <<parameters.set-vars>>
       value-files: <<parameters.value-files>>
       verify: <<parameters.verify>>
+      lock-wait: <<parameters.lock-wait>>
+
+  - steps: << parameters.after-deploy >>
