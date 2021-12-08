@@ -24,7 +24,8 @@ steps:
         fi
 
         cd ~/
-        curl -L -Ss --retry 5 https://github.com/outblocks/outblocks-cli/releases/download/${VERSION}/outblocks-${VERSION:1}-${PLATFORM}_amd64.tar.gz | tar xz ok
+        curl -L -Ss --retry 5 https://github.com/outblocks/outblocks-cli/releases/download/${VERSION}/outblocks-${VERSION:1}-${PLATFORM}_amd64.tar.gz -o outblocks.tar.gz
+        tar fxz outblocks.tar.gz ok
 
         $SUDO mv ./ok /usr/local/bin/ok
 
