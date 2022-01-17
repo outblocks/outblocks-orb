@@ -65,6 +65,11 @@ parameters:
     default: false
     description: |
       Skip all apps (if they exist).
+  skip-dns:
+    type: boolean
+    default: false
+    description: |
+      Skip DNS setup (including self managed certificates).
   skip-build:
     type: boolean
     default: false
@@ -128,6 +133,7 @@ steps:
       target-apps: <<parameters.target-apps>>
       skip-apps: <<parameters.skip-apps>>
       skip-all-apps: <<parameters.skip-all-apps>>
+      skip-dns: <<parameters.skip-dns>>
       skip-build: <<parameters.skip-build>>
       set-vars: <<parameters.set-vars>>
       value-files: <<parameters.value-files>>
