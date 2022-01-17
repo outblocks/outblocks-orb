@@ -21,6 +21,11 @@ parameters:
     default: false
     description: |
       Skip all apps (if they exist).
+  skip-dns:
+    type: boolean
+    default: false
+    description: |
+      Skip DNS setup (including self managed certificates).
   skip-build:
     type: boolean
     default: false
@@ -76,5 +81,6 @@ steps:
         ok deploy --yes ${args[@]} \
           --set "<<parameters.set-vars>>" \
           <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \
+          <<#parameters.skip-dns>>--skip-dns<</parameters.skip-dns>> \
           <<#parameters.skip-build>>--skip-build<</parameters.skip-build>> \
-          <<#parameters.verify>>--skip-build<</parameters.verify>>
+          <<#parameters.verify>>--verify<</parameters.verify>>
