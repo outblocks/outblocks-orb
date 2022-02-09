@@ -21,6 +21,10 @@ steps:
           VERSION=$(curl -s https://api.github.com/repos/outblocks/outblocks-cli/releases/latest | grep tag_name | cut -d '"' -f 4)
         else
           VERSION="<<parameters.version>>"
+
+          if [[ "$VERSION" != v* ]]; then
+            VERSION="v${VERSION}"
+          fi
         fi
 
         cd ~/
