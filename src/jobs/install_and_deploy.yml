@@ -100,6 +100,10 @@ steps:
   - checkout
   - install:
       version: <<parameters.version>>
+  - run:
+      name: Setup Outblocks env vars
+      command: |
+        echo 'export OUTBLOCKS_ENV="<<parameters.env>>"' >> $BASH_ENV
   - when:
       condition: <<parameters.setup-gcp>>
       steps:
