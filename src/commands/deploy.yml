@@ -6,6 +6,11 @@ parameters:
     default: $OUTBLOCKS_ENV
     description: |
       Outblocks environment to use. Defaults to 'dev'.
+  merge-mode:
+    type: boolean
+    default: false
+    description: |
+      Merge mode targets all apps that can be found (this is the same behavior as if all apps with visible app config were targeted manually).
   target-apps:
     type: string
     default: ""
