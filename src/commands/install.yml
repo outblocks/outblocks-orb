@@ -11,7 +11,7 @@ steps:
       name: Install Outblocks CLI version
       command: |
         if [[ $(command -v ok) != "" ]]; then
-          echo "outblocks CLI is already installed."
+          echo "Outblocks CLI is already installed."
           exit 0
         fi
 
