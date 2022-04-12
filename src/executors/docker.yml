@@ -3,12 +3,12 @@ description: >
 parameters:
   image:
     type: string
-    default: circleci/python
+    default: outblocks/cli
     description: Docker image name
 
   tag:
     type: string
-    default: "3.7"
+    default: latest
     description: Image tag
 
   resource_class:

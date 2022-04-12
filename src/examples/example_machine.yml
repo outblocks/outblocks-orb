@@ -10,7 +10,7 @@ usage:
     install_and_configure_cli:
       jobs:
         - outblocks/install_and_deploy:
-            # optionally determine executor to use
-            executor: outblocks/machine
+            executor: outblocks/machine # optionally determine executor to use
             context: myContext # store your Outblocks env vars via Contexts, or project-level environment variables
-            setup-gcp: true
+            version: v0.1.98 # optionally specify which version of cli to install, defaults to latest
+            setup-gcp: true # optionally set up gcloud and authorize with gcp. Requires GCLOUD_SERVICE_KEY to be set

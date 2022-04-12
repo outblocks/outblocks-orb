@@ -11,7 +11,7 @@ parameters:
   setup-gcp:
     default: false
     description: |
-        Setup and use GCP deployment.
+        Install and setup GCloud.
     type: boolean
   remote-docker-dlc:
     type: boolean
@@ -20,7 +20,7 @@ parameters:
       Enable docker layer caching if using remote Docker engine.
       Defaults to false.
   remote-docker-version:
-    default: "18.09.3"
+    default: "20.10.11"
     description: |
         Specify the remote docker version. See: https://circleci.com/docs/2.0/building-docker-images/#docker-version
     type: string

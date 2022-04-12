@@ -10,12 +10,16 @@ steps:
   - run:
       name: Install Outblocks CLI version
       command: |
+        if [[ $(command -v ok) != "" ]]; then
+          echo "outblocks CLI is already installed."
+          exit 0
+        fi
+
         [ -w /usr/local/bin ] && SUDO="" || SUDO=sudo
         PLATFORM="linux"
         if [ -n "$(uname | grep "Darwin")" ]; then
           PLATFORM="darwin"
         fi
-
 
         if [[ <<parameters.version>> == "latest" ]]; then
           VERSION=$(curl -s https://api.github.com/repos/outblocks/outblocks-cli/releases/latest | grep tag_name | cut -d '"' -f 4)
