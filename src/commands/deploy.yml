@@ -53,9 +53,9 @@ parameters:
       Verify existing resources before deploy.
   lock-wait:
     type: string
-    default: 5m
+    default: 10m
     description: |
-      How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '5m' (5 minutes).
+      How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '10m' (10 minutes).
 
 steps:
   - run:

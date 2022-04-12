@@ -1,0 +1,17 @@
+description: Run Outblocks CLI image
+
+usage:
+  version: 2.1
+
+  orbs:
+    outblocks: outblocks/outblocks@latest
+
+  workflows:
+    deploy:
+      jobs:
+        - outblocks/install_and_deploy:
+            executor:
+              name: outblocks/docker
+              version: v0.1.100 # optionally specify which version of cli to install, defaults to latest
+            context: myContext # store your Outblocks env vars via Contexts, or project-level environment variables
+            setup_remote_docker: true # remote docker is required when not using machine executor

@@ -1,0 +1,16 @@
+description: Install Outblocks CLI, if not available
+
+usage:
+  version: 2.1
+
+  orbs:
+    outblocks: outblocks/outblocks@latest
+
+  workflows:
+    install_and_configure_cli:
+      jobs:
+        - outblocks/install_and_deploy:
+            executor: outblocks/machine # optionally determine executor to use
+            context: myContext # store your Outblocks env vars via Contexts, or project-level environment variables
+            version: v0.1.100 # optionally specify which version of cli to install, defaults to latest
+            setup-gcp: true # optionally set up gcloud and authorize with gcp. Requires GCLOUD_SERVICE_KEY to be set
