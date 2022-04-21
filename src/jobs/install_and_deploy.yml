@@ -20,7 +20,7 @@ parameters:
       Enable docker layer caching if using remote Docker engine.
       Defaults to false.
   remote-docker-version:
-    default: "20.10.11"
+    default: "20.10.12"
     description: |
         Specify the remote docker version. See: https://circleci.com/docs/2.0/building-docker-images/#docker-version
     type: string
@@ -80,6 +80,11 @@ parameters:
     default: false
     description: |
       Skip build command before deploy.
+  skip-pull:
+    type: boolean
+    default: false
+    description: |
+      Skip docker images pull phase before deploy.
   set-vars:
     type: string
     default: ""
@@ -145,6 +150,7 @@ steps:
       skip-all-apps: <<parameters.skip-all-apps>>
       skip-dns: <<parameters.skip-dns>>
       skip-build: <<parameters.skip-build>>
+      skip-pull: <<parameters.skip-pull>>
       set-vars: <<parameters.set-vars>>
       value-files: <<parameters.value-files>>
       verify: <<parameters.verify>>
