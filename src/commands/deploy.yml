@@ -36,6 +36,11 @@ parameters:
     default: false
     description: |
       Skip build command before deploy.
+  skip-pull:
+    type: boolean
+    default: false
+    description: |
+      Skip docker images pull phase before deploy.
   set-vars:
     type: string
     default: ""
@@ -88,4 +93,5 @@ steps:
           <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \
           <<#parameters.skip-dns>>--skip-dns<</parameters.skip-dns>> \
           <<#parameters.skip-build>>--skip-build<</parameters.skip-build>> \
+          <<#parameters.skip-pull>>--skip-pull<</parameters.skip-pull>> \
           <<#parameters.verify>>--verify<</parameters.verify>>
