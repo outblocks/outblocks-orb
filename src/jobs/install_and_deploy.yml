@@ -20,9 +20,9 @@ parameters:
       Enable docker layer caching if using remote Docker engine.
       Defaults to false.
   remote-docker-version:
-    default: "20.10.12"
+    default: "default"
     description: |
-        Specify the remote docker version. See: https://circleci.com/docs/2.0/building-docker-images/#docker-version
+        Specify the remote docker version. See: https://circleci.com/docs/reference/configuration-reference/#setupremotedocker
     type: string
   setup-remote-docker:
     default: false

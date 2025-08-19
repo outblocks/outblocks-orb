@@ -1,10 +1,10 @@
 description: >
   CircleCI's Ubuntu-based machine executor VM:
-  https://circleci.com/docs/2.0/executor-types/#using-machine
+  https://circleci.com/developer/images?imageType=machine
 parameters:
   image:
     type: string
-    default: ubuntu-2004:202111-02
+    default: ubuntu-2204:current
 
   dlc:
     type: boolean
