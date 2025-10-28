@@ -8,89 +8,89 @@ parameters:
     default: machine
     description: >
       Executor to use for this job. Defaults to this machine executor.
-  setup-gcp:
+  setup_gcp:
     default: false
     description: |
         Install and setup GCloud.
     type: boolean
-  remote-docker-dlc:
+  remote_docker_dlc:
     type: boolean
     default: false
     description: |
       Enable docker layer caching if using remote Docker engine.
       Defaults to false.
-  remote-docker-version:
+  remote_docker_version:
     default: "default"
     description: |
         Specify the remote docker version. See: https://circleci.com/docs/reference/configuration-reference/#setupremotedocker
     type: string
-  setup-remote-docker:
+  setup_remote_docker:
     default: false
     description: |
         Setup and use CircleCI's remote Docker environment for Docker and docker-compose commands? Not required if using machine executor.
     type: boolean
-  before-deploy:
+  before_deploy:
     description: Steps that will be executed before deployment.
     type: steps
     default: []
-  after-deploy:
+  after_deploy:
     description: Steps that will be executed after deployment.
     type: steps
     default: []
 
-  # install params
+  # Install parameters.
   version:
     type: string
     default: latest
     description: Version of the CLI to install.
 
-  # deploy params
+  # Deploy parameters.
   env:
     type: string
     default: $OUTBLOCKS_ENV
     description: |
       Outblocks environment to use. Defaults to 'dev'.
-  merge-mode:
+  merge_mode:
     type: boolean
     default: false
     description: |
       Merge mode targets all apps that can be found (this is the same behavior as if all apps with visible app config were targeted manually).
-  target-apps:
+  target_apps:
     type: string
     default: ""
     description: |
       Target only specified apps, specify in a form of <app type>.<name>, e.g.: static.website,service.api
-  skip-apps:
+  skip_apps:
     type: string
     default: ""
     description: |
       Skip specified apps (if they exist), specify in a form of <app type>.<name>, e.g.: static.website,service.api
-  skip-all-apps:
+  skip_all_apps:
     type: boolean
     default: false
     description: |
       Skip all apps (if they exist).
-  skip-dns:
+  skip_dns:
     type: boolean
     default: false
     description: |
       Skip DNS setup (including self managed certificates).
-  skip-build:
+  skip_build:
     type: boolean
     default: false
     description: |
       Skip build command before deploy.
-  skip-pull:
+  skip_pull:
     type: boolean
     default: false
     description: |
       Skip docker images pull phase before deploy.
-  set-vars:
+  set_vars:
     type: string
     default: ""
     description: |
       Set values, can specify multiple or separate values with commas: key1=val1,key2=val2.
-  value-files:
+  value_files:
     type: string
     default: ""
     description: |
@@ -100,11 +100,16 @@ parameters:
     default: false
     description: |
       Verify existing resources before deploy.
-  lock-wait:
+  lock_wait:
     type: string
     default: 5m
     description: |
       How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '5m' (5 minutes).
+  no_output_timeout:
+    type: string
+    default: "20m"
+    description: |
+      Time limit for no output to be produced before terminating the job. Defaults to '20m' (20 minutes).
 
 steps:
   - checkout
@@ -115,7 +120,7 @@ steps:
       command: |
         echo 'export OUTBLOCKS_ENV="<<parameters.env>>"' >> $BASH_ENV
   - when:
-      condition: <<parameters.setup-gcp>>
+      condition: <<parameters.setup_gcp>>
       steps:
         - gcp-cli/install
         - run:
@@ -135,25 +140,25 @@ steps:
               mkdir -p "$HOME/.docker"
               gcloud auth configure-docker --quiet
   - when:
-      condition: <<parameters.setup-remote-docker>>
+      condition: <<parameters.setup_remote_docker>>
       steps:
           - setup_remote_docker:
-              docker_layer_caching: <<parameters.remote-docker-dlc>>
-              version: <<parameters.remote-docker-version>>
-  - steps: << parameters.before-deploy >>
+              docker_layer_caching: <<parameters.remote_docker_dlc>>
+              version: <<parameters.remote_docker_version>>
+  - steps: << parameters.before_deploy >>
 
   - deploy:
       env: <<parameters.env>>
-      merge-mode: <<parameters.merge-mode>>
-      target-apps: <<parameters.target-apps>>
-      skip-apps: <<parameters.skip-apps>>
-      skip-all-apps: <<parameters.skip-all-apps>>
-      skip-dns: <<parameters.skip-dns>>
-      skip-build: <<parameters.skip-build>>
-      skip-pull: <<parameters.skip-pull>>
-      set-vars: <<parameters.set-vars>>
-      value-files: <<parameters.value-files>>
+      merge_mode: <<parameters.merge_mode>>
+      target_apps: <<parameters.target_apps>>
+      skip_apps: <<parameters.skip_apps>>
+      skip_all_apps: <<parameters.skip_all_apps>>
+      skip_dns: <<parameters.skip_dns>>
+      skip_build: <<parameters.skip_build>>
+      skip_pull: <<parameters.skip_pull>>
+      set_vars: <<parameters.set_vars>>
+      value_files: <<parameters.value_files>>
       verify: <<parameters.verify>>
-      lock-wait: <<parameters.lock-wait>>
+      lock_wait: <<parameters.lock_wait>>
 
-  - steps: << parameters.after-deploy >>
+  - steps: << parameters.after_deploy >>

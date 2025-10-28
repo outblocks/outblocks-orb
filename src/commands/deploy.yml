@@ -6,47 +6,47 @@ parameters:
     default: $OUTBLOCKS_ENV
     description: |
       Outblocks environment to use. Defaults to 'dev'.
-  merge-mode:
+  merge_mode:
     type: boolean
     default: false
     description: |
       Merge mode targets all apps that can be found (this is the same behavior as if all apps with visible app config were targeted manually).
-  target-apps:
+  target_apps:
     type: string
     default: ""
     description: |
       Target only specified apps, specify in a form of <app type>.<name>, e.g.: static.website,service.api
-  skip-apps:
+  skip_apps:
     type: string
     default: ""
     description: |
       Skip specified apps (if they exist), specify in a form of <app type>.<name>, e.g.: static.website,service.api
-  skip-all-apps:
+  skip_all_apps:
     type: boolean
     default: false
     description: |
       Skip all apps (if they exist).
-  skip-dns:
+  skip_dns:
     type: boolean
     default: false
     description: |
       Skip DNS setup (including self managed certificates).
-  skip-build:
+  skip_build:
     type: boolean
     default: false
     description: |
       Skip build command before deploy.
-  skip-pull:
+  skip_pull:
     type: boolean
     default: false
     description: |
       Skip docker images pull phase before deploy.
-  set-vars:
+  set_vars:
     type: string
     default: ""
     description: |
       Set values, can specify multiple or separate values with commas: key1=val1,key2=val2.
-  value-files:
+  value_files:
     type: string
     default: ""
     description: |
@@ -56,15 +56,21 @@ parameters:
     default: false
     description: |
       Verify existing resources before deploy.
-  lock-wait:
+  lock_wait:
     type: string
-    default: 10m
+    default: 5m
     description: |
-      How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '10m' (10 minutes).
+      How long should deployment try to acquire lock (if it is acquired by concurrent job). Defaults to '5m' (5 minutes).
+  no_output_timeout:
+    type: string
+    default: "20m"
+    description: |
+      Time limit for no output to be produced before terminating the job. Defaults to '20m' (20 minutes).
 
 steps:
   - run:
       name: Run Outblocks deployment
+      no_output_timeout: <<parameters.no_output_timeout>>
       command: |
         args=()
 
@@ -72,26 +78,26 @@ steps:
           args+=(--env "<<parameters.env>>")
         fi
 
-        if [[ -n "<<parameters.value-files>>" ]]; then
-          args+=(--values "<<parameters.value-files>>")
+        if [[ -n "<<parameters.value_files>>" ]]; then
+          args+=(--values "<<parameters.value_files>>")
         fi
 
-        if [[ -n "<<parameters.target-apps>>" ]]; then
-          args+=(--target-apps "<<parameters.target-apps>>")
+        if [[ -n "<<parameters.target_apps>>" ]]; then
+          args+=(--target-apps "<<parameters.target_apps>>")
         fi
 
-        if [[ -n "<<parameters.skip-apps>>" ]]; then
-          args+=(--skip-apps "<<parameters.skip-apps>>")
+        if [[ -n "<<parameters.skip_apps>>" ]]; then
+          args+=(--skip-apps "<<parameters.skip_apps>>")
         fi
 
-        if [[ -n "<<parameters.lock-wait>>" ]]; then
-          args+=(--lock-wait "<<parameters.lock-wait>>")
+        if [[ -n "<<parameters.lock_wait>>" ]]; then
+          args+=(--lock-wait "<<parameters.lock_wait>>")
         fi
 
         ok deploy --yes ${args[@]} \
-          --set "<<parameters.set-vars>>" \
-          <<#parameters.skip-all-apps>>--skip-all-apps<</parameters.skip-all-apps>> \
-          <<#parameters.skip-dns>>--skip-dns<</parameters.skip-dns>> \
-          <<#parameters.skip-build>>--skip-build<</parameters.skip-build>> \
-          <<#parameters.skip-pull>>--skip-pull<</parameters.skip-pull>> \
+          --set "<<parameters.set_vars>>" \
+          <<#parameters.skip_all_apps>>--skip-all-apps<</parameters.skip_all_apps>> \
+          <<#parameters.skip_dns>>--skip-dns<</parameters.skip_dns>> \
+          <<#parameters.skip_build>>--skip-build<</parameters.skip_build>> \
+          <<#parameters.skip_pull>>--skip-pull<</parameters.skip_pull>> \
           <<#parameters.verify>>--verify<</parameters.verify>>
