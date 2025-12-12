@@ -41,6 +41,11 @@ parameters:
     default: false
     description: |
       Skip docker images pull phase before deploy.
+  docker_build_cache_dir:
+    type: string
+    default: ""
+    description: |
+      Directory to use for Docker build cache.
   set_vars:
     type: string
     default: ""
@@ -93,6 +98,11 @@ steps:
         if [[ -n "<<parameters.lock_wait>>" ]]; then
           args+=(--lock-wait "<<parameters.lock_wait>>")
         fi
+
+        if [[ -n "<<parameters.docker_build_cache_dir>>" ]]; then
+          args+=(--docker-build-cache-dir "<<parameters.docker_build_cache_dir>>")
+        fi
+
 
         ok deploy --yes ${args[@]} \
           --set "<<parameters.set_vars>>" \

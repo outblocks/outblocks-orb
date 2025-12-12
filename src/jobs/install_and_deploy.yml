@@ -85,6 +85,11 @@ parameters:
     default: false
     description: |
       Skip docker images pull phase before deploy.
+  docker_build_cache_dir:
+    type: string
+    default: ""
+    description: |
+      Directory to use for Docker build cache.
   set_vars:
     type: string
     default: ""
@@ -156,6 +161,7 @@ steps:
       skip_dns: <<parameters.skip_dns>>
       skip_build: <<parameters.skip_build>>
       skip_pull: <<parameters.skip_pull>>
+      docker_build_cache_dir: <<parameters.docker_build_cache_dir>>
       set_vars: <<parameters.set_vars>>
       value_files: <<parameters.value_files>>
       verify: <<parameters.verify>>
