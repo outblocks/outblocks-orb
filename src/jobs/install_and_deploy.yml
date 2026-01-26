@@ -90,6 +90,11 @@ parameters:
     default: ""
     description: |
       Directory to use for Docker build cache.
+  docker_build_cache_dir_output:
+    type: string
+    default: ""
+    description: |
+      Directory to use for Docker build cache output.
   set_vars:
     type: string
     default: ""
@@ -162,6 +167,7 @@ steps:
       skip_build: <<parameters.skip_build>>
       skip_pull: <<parameters.skip_pull>>
       docker_build_cache_dir: <<parameters.docker_build_cache_dir>>
+      docker_build_cache_dir_output: <<parameters.docker_build_cache_dir_output>>
       set_vars: <<parameters.set_vars>>
       value_files: <<parameters.value_files>>
       verify: <<parameters.verify>>

@@ -46,6 +46,11 @@ parameters:
     default: ""
     description: |
       Directory to use for Docker build cache.
+  docker_build_cache_dir_output:
+    type: string
+    default: ""
+    description: |
+      Directory to use for Docker build cache output.
   set_vars:
     type: string
     default: ""
@@ -101,6 +106,10 @@ steps:
 
         if [[ -n "<<parameters.docker_build_cache_dir>>" ]]; then
           args+=(--docker-build-cache-dir "<<parameters.docker_build_cache_dir>>")
+        fi
+
+        if [[ -n "<<parameters.docker_build_cache_dir_output>>" ]]; then
+          args+=(--docker-build-cache-dir-output "<<parameters.docker_build_cache_dir_output>>")
         fi
 
 
